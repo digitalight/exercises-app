@@ -1,7 +1,9 @@
+# Copy this file to your server along with the .env file
+# Run with: docker compose -f docker-compose.server.yml up -d
+
 services:
   backend:
-    build: ./backend
-    image: ${DOCKERHUB_USERNAME:-physio}/physio-tracker-backend:${IMAGE_TAG:-latest}
+    image: digitalight/physio-tracker-backend:latest
     container_name: physio-backend
     restart: unless-stopped
     environment:
@@ -12,8 +14,7 @@ services:
       - physio-uploads:/app/uploads
 
   frontend:
-    build: ./frontend
-    image: ${DOCKERHUB_USERNAME:-physio}/physio-tracker-frontend:${IMAGE_TAG:-latest}
+    image: digitalight/physio-tracker-frontend:latest
     container_name: physio-frontend
     restart: unless-stopped
     ports:

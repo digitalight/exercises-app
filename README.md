@@ -13,8 +13,10 @@ A mobile-first web app for logging and tracking physiotherapy exercises. Self-ho
 
 ## Quick Start with Docker
 
+Download the docker-compose.yml
+
 ```bash
-docker compose up -d --build
+docker compose up -d
 ```
 
 Then open **http://localhost:8080** in your browser.
@@ -24,6 +26,7 @@ Then open **http://localhost:8080** in your browser.
 ### Data persistence
 
 Exercise and log data is stored in Docker named volumes:
+
 - `physio-data` — SQLite database
 - `physio-uploads` — Uploaded exercise images
 
