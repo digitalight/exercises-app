@@ -57,6 +57,7 @@ export default function ProgressPage() {
       return {
         date: formatDateShort(d.date),
         fullDate: d.date,
+        timestamp: new Date(d.date + 'T00:00:00').getTime(),
         feeling: avgFeeling ? parseFloat(avgFeeling.toFixed(1)) : null,
         dailyFeeling: d.dailyLog?.overall_feeling || null,
         totalSets,
@@ -70,6 +71,7 @@ export default function ProgressPage() {
     .map((w) => ({
       date: formatDateShort(w.log_date),
       fullDate: w.log_date,
+      timestamp: new Date(w.log_date + 'T00:00:00').getTime(),
       weightDecimal: w.stones + (w.pounds / 14),
       label: `${w.stones}st ${w.pounds > 0 ? `${w.pounds}lb` : '0lb'}`,
     }))
@@ -131,7 +133,7 @@ export default function ProgressPage() {
                 <ResponsiveContainer width="100%" height={200}>
                   <LineChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: -20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                    <XAxis dataKey="timestamp" type="number" scale="time" domain={['dataMin', 'dataMax']} tickFormatter={(ts) => format(new Date(ts), 'dd MMM')} tick={{ fontSize: 11 }} />
                     <YAxis domain={[0, 10]} tick={{ fontSize: 11 }} />
                     <Tooltip
                       formatter={(value, name) => [value ? `${value}/10` : '—', name]}
@@ -168,7 +170,7 @@ export default function ProgressPage() {
                 <ResponsiveContainer width="100%" height={160}>
                   <LineChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: -20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                    <XAxis dataKey="timestamp" type="number" scale="time" domain={['dataMin', 'dataMax']} tickFormatter={(ts) => format(new Date(ts), 'dd MMM')} tick={{ fontSize: 11 }} />
                     <YAxis tick={{ fontSize: 11 }} />
                     <Tooltip labelStyle={{ fontWeight: 600 }} />
                     <Line
@@ -191,7 +193,7 @@ export default function ProgressPage() {
                 <ResponsiveContainer width="100%" height={200}>
                   <LineChart data={weightChartData} margin={{ top: 5, right: 5, bottom: 5, left: -10 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                    <XAxis dataKey="timestamp" type="number" scale="time" domain={['dataMin', 'dataMax']} tickFormatter={(ts) => format(new Date(ts), 'dd MMM')} tick={{ fontSize: 11 }} />
                     <YAxis
                       tick={{ fontSize: 11 }}
                       tickFormatter={(v) => `${Math.floor(v)}st`}
