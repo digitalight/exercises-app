@@ -55,7 +55,7 @@ export default function ExerciseSessionCard({ exercise, timeOfDay, date, session
       }`}
     >
       <button
-        className="w-full text-left px-3 py-2.5 flex items-center gap-2"
+        className="w-full text-left px-3 py-2 flex items-center gap-2"
         onClick={() => {
           if (!expanded && !completed) handleQuickLog();
           else setExpanded(!expanded);
@@ -85,14 +85,14 @@ export default function ExerciseSessionCard({ exercise, timeOfDay, date, session
       </button>
 
       {(expanded || (completed && expanded)) && (
-        <div className="px-3 pb-3 space-y-3 border-t border-gray-100 pt-3">
-          <div className="grid grid-cols-2 gap-3">
+        <div className="px-3 pb-2.5 space-y-2.5 border-t border-gray-100 pt-2.5">
+          <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="label text-xs">Sets completed</label>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-gray-500 w-8 shrink-0">Sets</span>
                 <button
                   type="button"
-                  className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                  className="w-7 h-7 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                   onClick={() => setSets((v) => Math.max(0, (parseInt(v) || 0) - 1))}
                 >−</button>
                 <input
@@ -101,22 +101,22 @@ export default function ExerciseSessionCard({ exercise, timeOfDay, date, session
                   max="20"
                   value={sets}
                   onChange={(e) => setSets(e.target.value)}
-                  className="flex-1 text-center input py-1.5 text-sm"
+                  className="flex-1 text-center input py-1 text-sm"
                   placeholder={exercise.default_sets}
                 />
                 <button
                   type="button"
-                  className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                  className="w-7 h-7 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                   onClick={() => setSets((v) => (parseInt(v) || 0) + 1)}
                 >+</button>
               </div>
             </div>
             <div>
-              <label className="label text-xs">Reps per set</label>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-gray-500 w-8 shrink-0">Reps</span>
                 <button
                   type="button"
-                  className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                  className="w-7 h-7 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                   onClick={() => setReps((v) => Math.max(0, (parseInt(v) || 0) - 1))}
                 >−</button>
                 <input
@@ -125,12 +125,12 @@ export default function ExerciseSessionCard({ exercise, timeOfDay, date, session
                   max="100"
                   value={reps}
                   onChange={(e) => setReps(e.target.value)}
-                  className="flex-1 text-center input py-1.5 text-sm"
+                  className="flex-1 text-center input py-1 text-sm"
                   placeholder={exercise.default_reps}
                 />
                 <button
                   type="button"
-                  className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                  className="w-7 h-7 rounded-lg bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                   onClick={() => setReps((v) => (parseInt(v) || 0) + 1)}
                 >+</button>
               </div>

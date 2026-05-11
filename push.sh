@@ -12,8 +12,7 @@ if [ -z "$DOCKERHUB_USERNAME" ] || [ "$DOCKERHUB_USERNAME" = "your-dockerhub-use
 fi
 
 TAG="${IMAGE_TAG:-latest}"
-BACKEND_IMAGE="$DOCKERHUB_USERNAME/physio-tracker-backend:$TAG"
-FRONTEND_IMAGE="$DOCKERHUB_USERNAME/physio-tracker-frontend:$TAG"
+APP_IMAGE="$DOCKERHUB_USERNAME/physio-tracker:$TAG"
 
 echo "Building and pushing as: $DOCKERHUB_USERNAME  tag: $TAG"
 echo ""
@@ -23,19 +22,11 @@ echo ""
 docker buildx build \
   --platform linux/amd64 \
   --push \
-  -t "$BACKEND_IMAGE" \
-  ./backend
+  -t "$APP_IMAGE" \
+  .
 
-echo "✓ Backend pushed: $BACKEND_IMAGE"
-
-docker buildx build \
-  --platform linux/amd64 \
-  --push \
-  -t "$FRONTEND_IMAGE" \
-  ./frontend
-
-echo "✓ Frontend pushed: $FRONTEND_IMAGE"
+echo "✓ App pushed: $APP_IMAGE"
 echo ""
 echo "Done! On your server run:"
-echo "  docker compose -f docker-compose.server.yml pull"
-echo "  docker compose -f docker-compose.server.yml up -d"
+echo "  docker compose pull"
+echo "  docker compose up -d"

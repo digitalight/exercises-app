@@ -128,7 +128,7 @@ export default function TodayPage() {
       </div>
 
       {/* Body */}
-      <div className="flex-1 px-4 py-4 space-y-4">
+      <div className="flex-1 px-4 py-2 space-y-2">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
@@ -150,34 +150,21 @@ export default function TodayPage() {
               </div>
             ) : (
               exercises.map((exercise) => (
-            <div key={exercise.id} className="card">
+            <div key={exercise.id} className="card !p-3">
               {/* Exercise header */}
-              <div className="flex gap-3 mb-4">
+              <div className="flex items-center gap-2 mb-2">
                 {exercise.image_path ? (
                   <img
                     src={exercise.image_path}
                     alt={exercise.name}
-                    className="w-20 h-20 rounded-xl object-cover flex-shrink-0 bg-gray-100"
+                    className="w-10 h-10 rounded-lg object-cover flex-shrink-0 bg-gray-100"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
-                    <span className="text-3xl">🦵</span>
+                  <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg">🦵</span>
                   </div>
                 )}
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-gray-900 text-base leading-tight">{exercise.name}</h3>
-                  {exercise.description && (
-                    <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{exercise.description}</p>
-                  )}
-                  <div className="flex gap-2 mt-1.5">
-                    <span className="text-xs bg-primary-50 text-primary-700 font-medium px-2 py-0.5 rounded-full">
-                      {exercise.default_sets} sets
-                    </span>
-                    <span className="text-xs bg-primary-50 text-primary-700 font-medium px-2 py-0.5 rounded-full">
-                      {exercise.default_reps} reps
-                    </span>
-                  </div>
-                </div>
+                <h3 className="font-semibold text-gray-900 text-sm leading-tight">{exercise.name}</h3>
               </div>
 
               {/* Time of day sessions */}
