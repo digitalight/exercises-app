@@ -21,7 +21,7 @@ docker compose up -d
 
 Then open **http://localhost:8080** in your browser.
 
-> To change the port, edit `docker-compose.yml` and change `"8080:80"` to `"YOUR_PORT:80"`.
+> To change the port, edit `docker-compose.yml` and change `"8080:3001"` to `"YOUR_PORT:3001"`.
 
 ### Data persistence
 
