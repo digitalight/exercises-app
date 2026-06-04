@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getExercises, deleteExercise, updateExercise } from '../utils/api.js';
+import ImageLightbox from '../components/ImageLightbox.jsx';
 
 export default function AdminPage() {
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -45,9 +47,13 @@ export default function AdminPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <div className="bg-white sticky top-0 z-40 border-b border-gray-100 px-4 pt-4 pb-3">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900">⚙️ Admin</h1>
+      <div className="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+        <div className="h-0.5 bg-primary-600" />
+        <div className="px-4 pt-3 pb-3 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-primary-600 uppercase tracking-widest">Settings</p>
+            <h1 className="text-2xl font-black text-gray-900 leading-tight">Exercises</h1>
+          </div>
           <Link to="/admin/exercises/new" className="btn-primary py-2 px-4 text-sm">
             + Add Exercise
           </Link>
@@ -72,11 +78,26 @@ export default function AdminPage() {
               className={`card flex gap-3 ${!exercise.active ? 'opacity-60' : ''}`}
             >
               {exercise.image_path ? (
-                <img
-                  src={exercise.image_path}
-                  alt={exercise.name}
-                  className="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-gray-100"
-                />
+                <button
+                  type="button"
+                  onClick={() => setLightboxImage({ src: exercise.image_path, alt: exercise.name })}
+                  className="relative flex-shrink-0 rounded-xl overflow-hidden group"
+                  aria-label={`View ${exercise.name} diagram`}
+                >
+                  <img
+                    src={exercise.image_path}
+                    alt={exercise.name}
+                    className="w-16 h-16 object-cover bg-gray-100"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-active:bg-black/20 transition-colors" />
+                  <div className="absolute bottom-1 right-1">
+                    <span className="bg-black/60 rounded p-0.5 flex">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} className="w-3 h-3">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                      </svg>
+                    </span>
+                  </div>
+                </button>
               ) : (
                 <div className="w-16 h-16 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0 text-2xl">
                   🦵
@@ -127,6 +148,14 @@ export default function AdminPage() {
           ))
         )}
       </div>
+
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          onClose={() => setLightboxImage(null)}
+        />
+      )}
     </div>
   );
 }

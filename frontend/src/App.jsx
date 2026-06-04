@@ -27,7 +27,7 @@ function NavBar() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-50 safe-area-pb">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 safe-area-pb">
       <div className="max-w-lg mx-auto flex">
         {navItems.map(({ to, label, icon }) => {
           const active = pathname === to || (to !== '/' && pathname.startsWith(to));
@@ -35,12 +35,15 @@ function NavBar() {
             <Link
               key={to}
               to={to}
-              className={`flex-1 flex flex-col items-center gap-1 py-3 transition-colors ${
+              className={`flex-1 flex flex-col items-center gap-1 py-3 transition-colors relative ${
                 active ? 'text-primary-600' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
+              {active && (
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-primary-600 rounded-full" />
+              )}
               {icon}
-              <span className="text-xs font-medium">{label}</span>
+              <span className={`text-xs ${active ? 'font-bold' : 'font-medium'}`}>{label}</span>
             </Link>
           );
         })}

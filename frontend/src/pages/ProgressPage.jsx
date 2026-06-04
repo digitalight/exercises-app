@@ -80,37 +80,43 @@ export default function ProgressPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <div className="bg-white sticky top-0 z-40 border-b border-gray-100 px-4 pt-4 pb-3 space-y-3">
-        <h1 className="text-xl font-bold text-gray-900">📈 Progress</h1>
+      <div className="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+        <div className="h-0.5 bg-primary-600" />
+        <div className="px-4 pt-3 pb-3 space-y-3">
+          <div>
+            <p className="text-xs font-semibold text-primary-600 uppercase tracking-widest">Stats</p>
+            <h1 className="text-2xl font-black text-gray-900 leading-tight">Progress</h1>
+          </div>
 
-        {/* Range picker */}
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          {RANGE_OPTIONS.map(({ label, days }) => (
-            <button
-              key={days}
-              onClick={() => setRangeDays(days)}
-              className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
-                rangeDays === days
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
+          {/* Range picker */}
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {RANGE_OPTIONS.map(({ label, days }) => (
+              <button
+                key={days}
+                onClick={() => setRangeDays(days)}
+                className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                  rangeDays === days
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Exercise filter */}
+          <select
+            value={selectedExercise}
+            onChange={(e) => setSelectedExercise(e.target.value)}
+            className="input py-2 text-sm"
+          >
+            <option value="all">All exercises</option>
+            {exercises.map((e) => (
+              <option key={e.id} value={e.id}>{e.name}</option>
+            ))}
+          </select>
         </div>
-
-        {/* Exercise filter */}
-        <select
-          value={selectedExercise}
-          onChange={(e) => setSelectedExercise(e.target.value)}
-          className="input py-2 text-sm"
-        >
-          <option value="all">All exercises</option>
-          {exercises.map((e) => (
-            <option key={e.id} value={e.id}>{e.name}</option>
-          ))}
-        </select>
       </div>
 
       <div className="flex-1 px-4 py-4 space-y-5">

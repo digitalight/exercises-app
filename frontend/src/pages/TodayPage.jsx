@@ -5,6 +5,7 @@ import { today, formatDate, TIME_OF_DAY_LABELS, feelingBg } from '../utils/helpe
 import ExerciseSessionCard from '../components/ExerciseSessionCard.jsx';
 import FeelingPicker from '../components/FeelingPicker.jsx';
 import WeightLogger from '../components/WeightLogger.jsx';
+import ImageLightbox from '../components/ImageLightbox.jsx';
 
 export default function TodayPage() {
   const [selectedDate, setSelectedDate] = useState(today());
@@ -15,6 +16,7 @@ export default function TodayPage() {
   const [loading, setLoading] = useState(true);
   const [savingLog, setSavingLog] = useState(false);
   const [showFeelingPicker, setShowFeelingPicker] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -76,12 +78,18 @@ export default function TodayPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <div className="bg-white sticky top-0 z-40 border-b border-gray-100">
-        <div className="px-4 pt-safe-top pt-4 pb-3">
+      <div className="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+        <div className="h-0.5 bg-primary-600" />
+        <div className="px-4 pt-3 pb-3">
           <div className="flex items-center justify-between mb-3">
-            <h1 className="text-xl font-bold text-gray-900">
-              {isToday ? '🏃 Today' : '📅 History'}
-            </h1>
+            <div>
+              <p className="text-xs font-semibold text-primary-600 uppercase tracking-widest">
+                {isToday ? 'Today' : 'History'}
+              </p>
+              <h1 className="text-2xl font-black text-gray-900 leading-tight">
+                Training
+              </h1>
+            </div>
             {dailyLog?.overall_feeling ? (
               <button
                 onClick={() => setShowFeelingPicker(true)}
@@ -150,25 +158,43 @@ export default function TodayPage() {
               </div>
             ) : (
               exercises.map((exercise) => (
-            <div key={exercise.id} className="card !p-3">
+            <div key={exercise.id} className="card !p-0 overflow-hidden">
               {/* Exercise header */}
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-3 px-4 pt-4 pb-3">
                 {exercise.image_path ? (
-                  <img
-                    src={exercise.image_path}
-                    alt={exercise.name}
-                    className="w-10 h-10 rounded-lg object-cover flex-shrink-0 bg-gray-100"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setLightboxImage({ src: exercise.image_path, alt: exercise.name })}
+                    className="relative flex-shrink-0 rounded-xl overflow-hidden group"
+                    aria-label={`View ${exercise.name} diagram`}
+                  >
+                    <img
+                      src={exercise.image_path}
+                      alt={exercise.name}
+                      className="w-16 h-16 object-cover bg-gray-100"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-active:bg-black/20 transition-colors" />
+                    <div className="absolute bottom-1 right-1">
+                      <span className="bg-black/60 rounded p-0.5 flex">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} className="w-3 h-3">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                        </svg>
+                      </span>
+                    </div>
+                  </button>
                 ) : (
-                  <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0">
-                    <span className="text-lg">🦵</span>
+                  <div className="w-16 h-16 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl">🦵</span>
                   </div>
                 )}
-                <h3 className="font-semibold text-gray-900 text-sm leading-tight">{exercise.name}</h3>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-gray-900 leading-tight">{exercise.name}</h3>
+                  <p className="text-xs text-gray-400 mt-0.5">{exercise.default_sets} sets × {exercise.default_reps} reps</p>
+                </div>
               </div>
 
               {/* Time of day sessions */}
-              <div className="space-y-2">
+              <div className="px-3 pb-3 space-y-2">
                 {['morning', 'afternoon', 'evening'].map((timeOfDay) => (
                   <ExerciseSessionCard
                     key={timeOfDay}
@@ -183,14 +209,17 @@ export default function TodayPage() {
 
               {/* Instructions expandable */}
               {exercise.instruction && (
-                <details className="mt-3">
-                  <summary className="text-xs font-medium text-primary-600 cursor-pointer hover:text-primary-700 select-none">
-                    View instructions
-                  </summary>
-                  <p className="text-xs text-gray-600 mt-2 leading-relaxed bg-primary-50 rounded-lg p-3">
-                    {exercise.instruction}
-                  </p>
-                </details>
+                <div className="border-t border-gray-100">
+                  <details className="group">
+                    <summary className="px-4 py-2.5 text-xs font-semibold text-primary-600 cursor-pointer hover:text-primary-700 select-none list-none flex items-center gap-1.5">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5 transition-transform group-open:rotate-180">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                      View instructions
+                    </summary>
+                    <p className="text-xs text-gray-600 px-4 pb-3 leading-relaxed">{exercise.instruction}</p>
+                  </details>
+                </div>
               )}
             </div>
           ))
@@ -208,6 +237,15 @@ export default function TodayPage() {
           onSave={handleFeelingSave}
           onClose={() => setShowFeelingPicker(false)}
           saving={savingLog}
+        />
+      )}
+
+      {/* Image Lightbox */}
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage.src}
+          alt={lightboxImage.alt}
+          onClose={() => setLightboxImage(null)}
         />
       )}
     </div>
